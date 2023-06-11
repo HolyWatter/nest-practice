@@ -31,7 +31,6 @@ export class User extends Document {
   nickname: string;
 
   @Prop({
-    required: true,
     default: 'customer',
   })
   @IsString()
