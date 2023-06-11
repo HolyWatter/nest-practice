@@ -13,5 +13,7 @@ export class AuthController {
   @Post('token')
   checkToken(@Headers() headers) {
     const { authorization } = headers;
+
+    this.authService.checkToken(authorization);
   }
 }

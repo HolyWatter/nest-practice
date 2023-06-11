@@ -2,6 +2,7 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersRepository } from 'src/users/repository/users.repository';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { Payload } from '../jwt/jwt.payload';
 
 @Injectable()
 export class AuthService {
@@ -25,7 +26,7 @@ export class AuthService {
       throw new UnauthorizedException('비밀번호가 일치하지 않습니다.');
     }
 
-    const payload = {
+    const payload: Payload = {
       email: email,
       sub: user.id,
     };
@@ -38,5 +39,28 @@ export class AuthService {
         expiresIn: '7d',
       }),
     };
+  }
+
+  async checkToken(authorization: string) {
+    const token = authorization.split('Bearer ')[1];
+
+    const isValidToken = this.jwtService.verify(token);
+
+    if (isValidToken) {
+      const payload: Payload = {
+        email: isValidToken.email,
+        sub: isValidToken.sub,
+      };
+      return {
+        accessToken: this.jwtService.sign(payload, {
+          expiresIn: '2h',
+        }),
+        refreshToken: this.jwtService.sign(payload, {
+          expiresIn: '7d',
+        }),
+      };
+    } else {
+      throw new UnauthorizedException('로그인이 필요합니다.');
+    }
   }
 }
