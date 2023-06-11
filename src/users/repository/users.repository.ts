@@ -29,4 +29,10 @@ export class UsersRepository {
     if (isExist) return true;
     else return false;
   }
+
+  async findEmail(email: string): Promise<User | null> {
+    const user = await this.userModel.findOne({ email });
+
+    return user;
+  }
 }
