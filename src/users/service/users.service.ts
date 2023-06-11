@@ -23,6 +23,6 @@ export class UsersService {
       nickname,
     });
 
-    return user;
+    return user.readOnlyData;
   }
 }
