@@ -63,4 +63,33 @@ export class AuthService {
       throw new UnauthorizedException('로그인이 필요합니다.');
     }
   }
+
+  async naverlogin(user) {
+    const info = await this.usersRepository.findEmail(user.email);
+    if (!info) {
+      const res = await this.usersRepository.signup({
+        email: user.email,
+        password: '',
+        nickname: user.name,
+      });
+    }
+    const findUser = await this.usersRepository.findEmail(user.Email);
+
+    const payload = {
+      email: findUser.email,
+      sub: findUser.id,
+    };
+    return this.signJWT(payload);
+  }
+
+  async signJWT(payload) {
+    return {
+      accessToken: this.jwtService.sign(payload, {
+        expiresIn: '2h',
+      }),
+      refreshToken: this.jwtService.sign(payload, {
+        expiresIn: '7d',
+      }),
+    };
+  }
 }

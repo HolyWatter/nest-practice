@@ -31,6 +31,7 @@ export class UsersRepository {
   }
 
   async findEmail(email: string): Promise<User | null> {
+    console.log(email);
     const user = await this.userModel.findOne({ email });
 
     return user;

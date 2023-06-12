@@ -16,9 +16,7 @@ export class User extends Document {
   @IsNotEmpty()
   email: string;
 
-  @Prop({
-    required: true,
-  })
+  @Prop()
   @IsString()
   @IsNotEmpty()
   password: string;
