@@ -67,18 +67,21 @@ export class AuthService {
   async naverlogin(user) {
     const info = await this.usersRepository.findEmail(user.email);
     if (!info) {
-      const res = await this.usersRepository.signup({
+      const signupInfo = {
         email: user.email,
         password: '',
         nickname: user.name,
-      });
+      };
+      const res = await this.usersRepository.signup(signupInfo);
     }
-    const findUser = await this.usersRepository.findEmail(user.Email);
+
+    const findUser = await this.usersRepository.findEmail(user.email);
 
     const payload = {
       email: findUser.email,
       sub: findUser.id,
     };
+
     return this.signJWT(payload);
   }
 

@@ -10,6 +10,7 @@ export class UsersRepository {
   ) {}
 
   async signup(userInfo) {
+    console.log(userInfo);
     const { email, password, nickname } = userInfo;
 
     const newUser = await this.userModel.create({
@@ -31,7 +32,6 @@ export class UsersRepository {
   }
 
   async findEmail(email: string): Promise<User | null> {
-    console.log(email);
     const user = await this.userModel.findOne({ email });
 
     return user;
