@@ -25,4 +25,8 @@ export class UsersService {
 
     return user.readOnlyData;
   }
+
+  async getCurrentUser({ email }) {
+    return await this.usersRepository.findEmail(email);
+  }
 }

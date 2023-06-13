@@ -11,7 +11,6 @@ import {
 import { AuthService } from '../service/auth.service';
 import { NaverAuthGuard } from '../naver/naver.auth.guard';
 import { AuthGuard } from '@nestjs/passport';
-import { rejects } from 'assert';
 
 @Controller('auth')
 export class AuthController {
@@ -32,7 +31,6 @@ export class AuthController {
   @Get('naverlogin')
   @UseGuards(AuthGuard('naver'))
   naverlogin(@Req() req, @Res() res) {
-    console.log(req.user);
     return this.authService.naverlogin(req.user);
   }
 }
