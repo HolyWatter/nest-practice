@@ -19,5 +19,14 @@ export class RestaurantRepository {
     });
   }
 
-  async;
+  async paginateRestaurant({ page, limit }) {
+    const skip = (page - 1) * limit;
+    const items = await this.RestaurantModel.find().skip(skip).limit(limit);
+
+    return items;
+  }
+
+  async countAllRestaurant() {
+    return await this.RestaurantModel.count();
+  }
 }
