@@ -29,4 +29,14 @@ export class RestaurantRepository {
   async countAllRestaurant() {
     return await this.RestaurantModel.count();
   }
+
+  async uploadThumbnail({ id, url }) {
+    const restaurant = await this.RestaurantModel.findById(id);
+
+    restaurant.thumbnilUrl = url;
+
+    const newRestaurant = await restaurant.save();
+
+    return newRestaurant;
+  }
 }

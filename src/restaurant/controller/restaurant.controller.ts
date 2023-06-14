@@ -2,11 +2,15 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   Query,
-  RawBodyRequest,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { RestaurantService } from '../service/restaurant.service';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { multerOptions } from 'src/common/utils/multer.options';
 
 @Controller('restaurant')
 export class RestaurantController {
@@ -30,5 +34,11 @@ export class RestaurantController {
       description,
       deliveryFee,
     });
+  }
+
+  @Post('upload/:id')
+  @UseInterceptors(FileInterceptor('image', multerOptions('thumbnail')))
+  uploadThumbnail(@UploadedFile() file: Express.Multer.File, @Param('id') id) {
+    return this.restaurantService.uploadThumbnail({ id, file });
   }
 }

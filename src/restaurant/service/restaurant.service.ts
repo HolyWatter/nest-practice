@@ -42,4 +42,14 @@ export class RestaurantService {
       meta,
     };
   }
+
+  async uploadThumbnail({ id, file }) {
+    const fineName = file.filename;
+    const url = `http://localhost:8000/media/thumbnail/${fineName}`;
+
+    return await this.restaurantRepository.uploadThumbnail({
+      id,
+      url,
+    });
+  }
 }
