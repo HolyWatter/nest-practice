@@ -1,12 +1,9 @@
 import { Prop, Schema, SchemaFactory, SchemaOptions } from '@nestjs/mongoose';
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 import { Document } from 'mongoose';
+import { schemaOptions } from 'src/common/utils/schema.options';
 
-const options: SchemaOptions = {
-  timestamps: true,
-};
-
-@Schema(options)
+@Schema(schemaOptions)
 export class User extends Document {
   @Prop({
     required: true,

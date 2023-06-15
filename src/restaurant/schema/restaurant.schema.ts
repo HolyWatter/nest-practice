@@ -1,12 +1,9 @@
 import { Prop, Schema, SchemaFactory, SchemaOptions } from '@nestjs/mongoose';
 import { IsNumber, IsString } from 'class-validator';
 import { Document } from 'mongoose';
+import { schemaOptions } from 'src/common/utils/schema.options';
 
-const Options: SchemaOptions = {
-  timestamps: true,
-};
-
-@Schema(Options)
+@Schema(schemaOptions)
 export class Restaurant extends Document {
   @Prop({
     required: true,
