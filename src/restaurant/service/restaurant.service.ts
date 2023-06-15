@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { RestaurantRepository } from '../repository/restaurant.repository';
 import { Restaurant } from '../schema/restaurant.schema';
 import { PaginationMetaDto } from 'src/common/dto/pagination.meta.dto';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Injectable()
 export class RestaurantService {
@@ -21,10 +22,7 @@ export class RestaurantService {
     });
   }
 
-  async getAllRestaurant({
-    limit,
-    page,
-  }): Promise<{ data: Restaurant[]; meta: PaginationMetaDto }> {
+  async getAllRestaurant({ limit, page }): Promise<PaginationDto<Restaurant>> {
     const [data, total] = await Promise.all([
       this.restaurantRepository.paginateRestaurant({ page, limit }),
       this.restaurantRepository.countAllRestaurant(),

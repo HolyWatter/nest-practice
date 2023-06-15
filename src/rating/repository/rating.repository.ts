@@ -9,6 +9,20 @@ export class RatingRepository {
     @InjectModel(Rating.name) private readonly ratingModel: Model<Rating>,
   ) {}
 
+  async paginateRatings({ page, limit, restaurantId }) {
+    const skip = (page - 1) * limit;
+    const items = await this.ratingModel
+      .find({ target: restaurantId })
+      .skip(skip)
+      .limit(limit);
+
+    return items;
+  }
+
+  async countAllRatings() {
+    return await this.ratingModel.count();
+  }
+
   async writeRating({
     imgUrls,
     rating,
