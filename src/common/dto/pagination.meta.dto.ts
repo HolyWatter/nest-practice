@@ -1,4 +1,4 @@
-import { IsNumber } from 'class-validator';
+import { IsBoolean, IsNumber } from 'class-validator';
 
 export class PaginationMetaDto {
   @IsNumber()
@@ -10,9 +10,9 @@ export class PaginationMetaDto {
   @IsNumber()
   totalPages: number;
 
-  @IsNumber()
+  @IsBoolean()
   hasNext: boolean;
 
-  @IsNumber()
+  @IsBoolean()
   hasPrev: boolean;
 }
