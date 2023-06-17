@@ -1,16 +1,5 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Headers,
-  Post,
-  Req,
-  Res,
-  UseGuards,
-} from '@nestjs/common';
+import { Body, Controller, Get, Headers, Post, Query } from '@nestjs/common';
 import { AuthService } from '../service/auth.service';
-import { NaverAuthGuard } from '../naver/naver.auth.guard';
-import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 export class AuthController {
@@ -29,8 +18,9 @@ export class AuthController {
   }
 
   @Get('naverlogin')
-  @UseGuards(AuthGuard('naver'))
-  naverlogin(@Req() req, @Res() res) {
-    return this.authService.naverlogin(req.user);
+  async naverlogin(@Query('token') token) {
+    const accessToken = await this.authService.naverlogin(token);
+
+    return accessToken;
   }
 }

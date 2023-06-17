@@ -64,25 +64,34 @@ export class AuthService {
     }
   }
 
-  async naverlogin(user) {
-    const info = await this.usersRepository.findEmail(user.email);
-    if (!info) {
-      const signupInfo = {
-        email: user.email,
+  async naverlogin(token: string) {
+    const getUser = await fetch('https://openapi.naver.com/v1/nid/me', {
+      headers: {
+        'User-Agent':
+          'curl/7.12.1 (i686-redhat-linux-gnu) libcurl/7.12.1 OpenSSL/0.9.7a zlib/1.2.1.2 libidn/0.5.6',
+        Host: 'openapi.naver.com',
+        Pragma: 'no-cache',
+        Accept: '*/*',
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((res) => res.json())
+      .then((res) => res.response);
+    let user = await this.usersRepository.findEmail(getUser.email);
+    if (!user) {
+      user = await this.usersRepository.signup({
+        email: getUser.email,
         password: '',
-        nickname: user.name,
-      };
-      const res = await this.usersRepository.signup(signupInfo);
+        nickname: getUser.name,
+      });
     }
 
-    const findUser = await this.usersRepository.findEmail(user.email);
-
     const payload = {
-      email: findUser.email,
-      sub: findUser.id,
+      email: user.email,
+      sub: user._id,
     };
 
-    return this.signJWT(payload);
+    return await this.signJWT(payload);
   }
 
   async signJWT(payload) {
